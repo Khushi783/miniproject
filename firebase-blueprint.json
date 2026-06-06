@@ -1,0 +1,88 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Student profile information",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Full name" },
+        "email": { "type": "string", "description": "Email address" },
+        "mobile": { "type": "string" },
+        "branch": { "type": "string" },
+        "semester": { "type": "number" },
+        "bio": { "type": "string" },
+        "githubUrl": { "type": "string" },
+        "linkedinUrl": { "type": "string" },
+        "resumeUrl": { "type": "string" },
+        "skills": { "type": "array", "items": { "type": "string" } },
+        "interests": { "type": "array", "items": { "type": "string" } },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "email", "createdAt"]
+    },
+    "Project": {
+      "title": "Project",
+      "description": "Project postings created by students",
+      "type": "object",
+      "properties": {
+        "ownerId": { "type": "string" },
+        "ownerName": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "category": { "type": "string" },
+        "teamSize": { "type": "number" },
+        "deadline": { "type": "string", "format": "date-time" },
+        "difficulty": { "type": "string" },
+        "skillsRequired": { "type": "array", "items": { "type": "string" } },
+        "currentMembers": { "type": "array", "items": { "type": "string" } },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["ownerId", "ownerName", "title", "description", "category", "teamSize", "createdAt"]
+    },
+    "JoinRequest": {
+      "title": "Join Request",
+      "description": "Requests from students to join a project",
+      "type": "object",
+      "properties": {
+        "projectId": { "type": "string" },
+        "studentId": { "type": "string" },
+        "studentName": { "type": "string" },
+        "projectTitle": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "message": { "type": "string" },
+        "status": { "type": "string", "enum": ["Pending", "Accepted", "Rejected"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["projectId", "studentId", "ownerId", "status", "createdAt"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "Notifications for a user",
+      "type": "object",
+      "properties": {
+        "message": { "type": "string" },
+        "read": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["message", "read", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "Store user profiles"
+    },
+    "/projects/{projectId}": {
+      "schema": { "$ref": "#/entities/Project" },
+      "description": "Store all project postings"
+    },
+    "/requests/{requestId}": {
+      "schema": { "$ref": "#/entities/JoinRequest" },
+      "description": "Store all join requests"
+    },
+    "/users/{userId}/notifications/{notificationId}": {
+      "schema": { "$ref": "#/entities/Notification" },
+      "description": "Store notifications for each user"
+    }
+  }
+}
